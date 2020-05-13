@@ -349,7 +349,7 @@ func (b bridgeImpl) init(config *BridgeConfig) error {
 	if err := b.initPrep(config); err != nil {
 		return err
 	}
-	if _, err := CreateAndAttachVeth(BridgeIfName, PcapIfName, config.WeaveBridgeName, config.MTU, true, false, func(veth netlink.Link) error {
+	if _, err := CreateAndAttachVeth("/proc", BridgeIfName, PcapIfName, config.WeaveBridgeName, config.MTU, true, false, func(veth netlink.Link) error {
 		return netlink.LinkSetUp(veth)
 	}); err != nil {
 		return errors.Wrap(err, "creating pcap veth pair")
@@ -399,7 +399,7 @@ func (bf bridgedFastdpImpl) init(config *BridgeConfig) error {
 	if err := bf.bridgeImpl.initPrep(config); err != nil {
 		return err
 	}
-	if _, err := CreateAndAttachVeth(BridgeIfName, DatapathIfName, config.WeaveBridgeName, config.MTU, true, false, func(veth netlink.Link) error {
+	if _, err := CreateAndAttachVeth("/proc", BridgeIfName, DatapathIfName, config.WeaveBridgeName, config.MTU, true, false, func(veth netlink.Link) error {
 		if err := netlink.LinkSetUp(veth); err != nil {
 			return errors.Wrapf(err, "setting link up on %q", veth.Attrs().Name)
 		}
